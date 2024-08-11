@@ -1,4 +1,4 @@
-#Installimg the package
+#Installimg the package 
 install.packages("imager")
 library(imager)
 
