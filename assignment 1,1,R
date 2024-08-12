@@ -1,0 +1,514 @@
+#Write a function in R to find 𝑛!. This function should have an argument n that can be used to call the function for a given integer. Verify your answer with factorial() function.
+#Q1 Write a function in R to find 𝑛!. This function should have an argument n that can be used to call the function for a given integer. Verify your answer with factorial() function.
+factorial <- function(n)
+{
+  answer <- 1
+@@ -7,21 +7,45 @@ factorial <- function(n)
+  return(answer)
+}
+
+#Euler’s number, 𝑒, is accessed through exp(1) in R. Similarly 𝑒^3 is exp(3). Write a function in R that calculates the right hand side (without the limit) for a user-given value of𝑛.
+fact <- function(n)
+{
+  prod(1:n)
+}
+
+
+#Q2 Euler’s number, 𝑒, is accessed through exp(1) in R. Similarly 𝑒^3 is exp(3). Write a function in R that calculates the right hand side (without the limit) for a user-given value of𝑛.
+exp <- function(n)
+{
+  euler <- (1 + 1/n)^n  
+  return(euler^n)
+}
+
+#Load the seating dataset: seat <- read.csv("https://dvats.github.io/assets/course/mth208/seating.csv")
+
+#Q3 Load the seating dataset: seat <- read.csv("https://dvats.github.io/assets/course/mth208/seating.csv")
+#Write R code to find your assigned seat using your roll number as reference. 
+seat_df <- read.csv("https://dvats.github.io/assets/course/mth208/seating.csv")  
+roll_numbers <- seat[,1]
+my_seat_serial_number <- which(roll_numbers == 241080085)
+seats <- seat_df[,3]
+seats[my_seat_serial_number]
+
+#The seating.csv dataset is also shared in the repository folder. Using read.csv() function, load the locally downloaded seating.csv into your R session. You will need to make sure you set the working directory to the folder where the csv file is.  
+myrow <- seat_df$Roll.No ==241080085
+myseat <- seat_df[myrow,3]
+myseat <- seat_df[myrow,"Seat.Number"]
+
+
+#Q4 The seating.csv dataset is also shared in the repository folder. Using read.csv() function, load the locally downloaded seating.csv into your R session. You will need to make sure you set the working directory to the folder where the csv file is.  
+setwd("D:/COLLEGE/IIT Kanpur/Sem 1/Data Science Lab 1 MTH208/Worksheet 1") 
+seating_csv <- read.csv(file.choose(), header=T)
+
+
+#Q5 Recall the seating chart for this course: seat <- read.csv("https://dvats.github.io/assets/course/mth208/seating.csv") 
+#MSc students have 9-digit roll numbers and BS students have 6-digit roll numbers. Write R code to calculate the number of MSc students enrolled in this course, and the number of BS students enrolled in this course.
+seat_df <- read.csv("https://dvats.github.io/assets/course/mth208/seating.csv")  
+str(seat_df)
+typeof(seat_df$Roll.No)
+check <- seat_df$Roll.No > 1e7
+str(check)
+msc <- sum(check)
+
+
+
+?rbinom
+# n = number of coin tosses
+# size = 1 (tells R we are tossing a coin)
+# size = 1 (tells R we are tossing 1 coin only in 1 toss)
+# prob = probability of success
+rbinom(n = 1, size = 1, prob = 0.5)
+
+@@ -11,13 +11,12 @@ tail(tosses1a)
+heads1a <- sum(tosses1a)
+proportion_heads1a <- heads1a/1000
+
+#Q1b Simulate 1000 tosses of a coin that has probability of heads equal to 0.30. Calculate the proportion of heads
+#Q1b Simulate 1000 tosses of a coin that has probability of heads equal to 0.30. Calculate the proportion of heads.
+tosses1b <- rbinom(n = 1000, size = 1, prob = 0.3)
+heads1b <- sum(tosses1b)
+proportion_heads1b <-heads1b/1000
+
+
+
+# Rolling a die
+sample(x = 1:6, size = 1)
+# Rolling an unfair die
+@@ -28,28 +27,142 @@ sample(x = 1:6, size = 1, prob = c(.1, .2, .1, .1, .3, .2))
+ball_drawn <- sample(c(rep("red",3), rep("green",2), rep("blue",2), size=1))
+balls <- c("red", "red", "red", "green", "green", "blue", "blue")
+ball_drawn2 <- sample(balls, size=1)
+ball_drawn3 <- sample(c("red", "green" , "blue"), size=1, prob=c(3, 2, 2))
+ball_drawn3 <- sample(c("red", "green" , "blue"), size=1, prob=c(3/7, 2/7, 2/7))
+?rep
+
+#Q2b 
+A <- matrix(c(3, 1, -2, 4, 5, 3, -1, 2, -2), nrow = 3, ncol = 3)
+?numeric
+probs <- numeric(length = ncol(A))
+for(i in 1:ncol(A))
+{
+  Ai <- A[ ,i]
+  probs[i] <- sqrt(sum(Ai^2))
+}
+probs <- probs/sum(probs)
+choose_column <- sample(1:ncol(A), prob = probs)
+choose_column <- sample(1:ncol(A), prob = probs, size = 1)
+A[ ,choose_column]
+
+
+# drawing a random number between [a,b]
+# n = number of random numbers
+?runif
+#  drawing a random number between [a,b]
+# n =number of random numbers
+# min = a
+# max = b
+runif(n = 1, min = 0, max = 1)
+
+#Q2c Suppose I throw a dart anywhere at random on a thread of length 5 cm (assume I will always
+#throw the dart on the thread and never miss the thread – I am very good at throwing darts).
+#Write an R code to simulate where the dart lands on the thread
+runif(n=1, min=0, max=5)
+
+
+#Q3 We will try to run a simulation whose answer should be close to exp(1). You will need to use a few
+#new commands in this. Note that, to define a vector of length 1000, you can use command
+new <- numeric(length = 1000)
+#Also, we have learned for() loops, which can be used to implement a loop when the number of loopings
+#are known. However, when the number loops are unknown and based on some condition, we can use the 
+#while(condition){---} loop. This runs the loop as long as the condition within the while command is satisfied.
+
+#Q3a Write an R function called exceed() to count the number of random [0,1] draws it takes for their
+#sum to exceed 1. The function should have no inputs and should return just one numeric output.
+#The syntax will look like:
+exceed <- function()
+{
+  count <- 0
+  while(...)
+  {
+    ...
+  }
+  return(count)
+}
+
+
+exceed <- function()
+{
+  count <- 0
+  sum <- 0
+  while (sum <= 1) 
+  {
+    random = runif(n=1, min = 0, max = 1)
+    sum = sum + random
+    count = count + 1
+  }
+  return(count)
+}
+exceed()
+
+#Q3b Write an R program to call the above function 1000 times and store all 1000 outputs in a numeric
+#vector. The code will look like:
+store <- numeric(length = 1000)
+for(r in 1:1000)
+{
+  store[r] <- ...
+}
+
+
+store <- numeric(length = 1000)
+for(r in 1:1000)
+{
+  store[r] <- exceed()
+}
+store
+
+
+#Q3c Return the average of the 1000 outputs. This should be close to exp(1).
+mean(store)
+
+
+##Q4 It’s your 25th birthday, and your friends bought you a cake with 25 candles on it. You make a wish
+#and try to blow them out. Every time, you blow out a random number of candles between one and
+#the number that remain.
+
+#Q4a Write an R function that age as an input and returns the number of attempts it takes to blow out
+#all the candles. You may need the break command to write this function or use the while loop.
+
+func <- function(age)
+{ 
+  attempts <- 0
+  while (age > 0) 
+  {
+    blown <- sample(1:age, size = 1)
+    age <- age - blown
+    attempts <- attempts + 1
+  }
+return(attempts)
+}
+func(25)
+
+#Q4b Write an R program to call the above function 1000 times and store all 1000 outputs in a numeric
+#vector. You now have 1000 simulated candle blowing experiments.
+vect <- numeric(length = 1000)
+for (i in 1:1000) 
+{
+
+  vect[i] <- func(25)
+}
+vect
+
+#Q4c How many times, on average, do you need to blow at the cake until all the candles are extinguished?
+mean(vect)
+
+#Q4d Repeat the above for you 30th birthday.
+candle <- function(age)
+{ 
+  count1 <- 0
+  while(age > 0)
+  {
+      blown1 = sample(1:age, size = 1)
+      age = age - blown1
+      count1 = count1 + 1
+  }
+  return(count1)
+}
+candle(30)
+
+keep <- numeric(length = 1000)
+for(i in 1:1000)
+{
+  keep[i] = candle(30)
+}
+keep
+mean(keep)
+
+
+
+#Q1. Define an R vector of the first 1000 odd integers.
+seq(from = 1,to = 1000, by = 2)
+
+odd_numbers <- c()
+i <- 1
+
+# While loop to generate the first 1000 odd integers
+while (length(odd_numbers) < 1000) 
+  {
+  if (i %% 2 != 0) {  # Check if the number is odd
+    odd_numbers <- c(odd_numbers, i)
+  }
+  i <- i + 1
+}
+
+# Print the first few elements to verify
+print(head(odd_numbers))
+
+
+?seq
+
+#Q2. Define an R vector of the first 500 Fibonacci numbers.
+{
+  fibo <- numeric(length = 500)
+  fibo[1] <- 0
+  fibo[2] <- 1
+  for(i in 3:500)
+  {
+    fibo[i] <- fibo[i-1] + fibo[i-2]
+  }
+  fibo
+}
+
+?sample
+?cat
+
+#Q3. Write an R function that rolls a fair die and returns 1 if the die turns out to be even.
+roll <- function()
+{
+  rolling <- sample(x = 1:6, size = 1)
+  if (rolling %% 2 == 0)
+  {
+    return(1)
+  }
+}
+roll()
+
+
+#Q4. Write an R function that tosses a fair coin 15 times. The function should return "lose" if the number heads is less than 8 
+#and "win"if the number of heads is more than or equal to 8.
+roll <- function()
+{
+  tossing <- rbinom(n = 15, size = 1, prob = 0.5)
+  if (sum(tossing)  < 8)
+  {
+    return("lose")
+  }
+  else
+  {
+    return("win")
+  }
+}
+roll()
+
+#Q5. Define a 5 × 5 matrix of all elements being 1.
+matrix <- matrix(1, nrow = 5, ncol = 5 )
+matrix <- matrix(c(rep(1,25)), nrow = 5, ncol = 5 )
+
+#Q6. Define a 5 × 5 diagonal matrix with the diagonals being 1:5.
+matrix <- matrix(0, nrow = 5, ncol = 5)
+for(i in 1:5)
+{
+  matrix[i,i] <- i
+}
+
+
+#Q7. Define a 10 × 10 matrix where each entry is the result of a random roll of a fair die.
+matrix <- matrix(0, nrow = 10, ncol = 10)
+for(i in 1:10)
+{
+  for(j in 1:10)
+  {
+    matrix[i,j] <- sample(x = 1:6, size =1)
+  }
+}
+
+
+#8. Write an R function that takes inputs n and rho. The function should return a matrix 
+#with 1s on the diagonals and rho on the off-diagonals.
+
+rmat <- function(n,rho)
+{
+  mat <- matrix(1, nrow = n, ncol = n)
+  for(i in 1:n)
+  {
+    for(j in 1:n)
+    {
+      if(i != j)
+      {
+        mat[i,j] <- rho
+      }
+      else
+        mat[i,j] <- 1
+    }
+  }
+  return(mat)
+}
+rmat(5,7)
+
+#Q9
+rmat <- function(n,rho)
+{
+  mat <- matrix(1, nrow = n, ncol = n)
+  for(i in 1:n)
+  {
+    for(j in 1:n)
+    {
+      mat[i,j] <- rho^abs(i-j)
+    }
+  }
+  return(mat)
+}
+rmat(5,7)
+
+#Q10 Write an R function that takes a matrix input and returns a smaller matrix 
+#with only the odd columns of the original matrix.
+ fx <- function(matrix_)  # Define the function to extract odd columns
+  {
+  odd_col_matrix <- matrix_[, seq(1, ncol(matrix_), by = 2)] # Select only the odd columns using seq to generate indices
+  return(odd_col_matrix)
+  }
+sample_matrix <- matrix(1:20, nrow = 4, ncol = 5)  # Creating a sample matrix
+result_matrix <- fx(sample_matrix) # Extracting the odd columns
+result_matrix
+
+
+#Q11. Define an 4 dimensional arrays with dimensions 10 × 4 × 6 × 5 where the entries are all 1s.
+?array
+array(data = 1, dim = c(10, 4, 6, 5))
+
+#WORKSHEET BASED PROBLEMS
+#Q1. Write an R function to calculate the area of a circle of radius for a user-given value of r.
+area <- function(radius)
+{
+  area_of_circle <- pi*(radius)^2
+  return(area_of_circle)
+}
+area(3)
+
+#Q2. Write an R function that returns the larger of two inputs x and y.
+larger_input <- function(a,b)
+{
+  if (a>b)
+    return(a)
+  else
+    return(b)
+}
+larger_input(7,9)
+
+#Q3. Write an R program that saves the output of 1000 rolls of a fair die and returns the number of times
+#the output was an even number.
+even_outputs <- function()
+{
+  rolls <- sample(1:6, size = 1000, replace = T )
+  return( sum (rolls%%2==0))
+}
+even_outputs()
+
+#Q4. Draw 1000 random number between [0, 1] and calculate the proportion of numbers between 0.1 and 0.2.
+x <- runif( n = 1000, min = 0, max = 1)
+prop <- sum (0.1<x & x<0.2)/1000
+
+#Q5.
+fn <- function()
+{
+  char <- c( "Harry", "Dumbledore", "Hermione", "Ron", "Neville", "Mcgonagall", "Dobby")
+  packets <- c(0,0,0,0,0,0,0)
+  probs <- c(0.25, 0.20, 0.20, 0.15, 0.10, 0.05, 0.05)
+  while (min(packets)==0)
+    {
+      toy <- sample(char, size = 1, prob = probs)
+      index <- which(char == toy)
+      packets[index] <- packets[ index] + 1
+    }
+  return (sum(packets))
+}
+
+n <- integer (length = 1000)
+for (i in 1:1000)
+  {
+    n[i] <- fn()
+  }
+mean (n)
+
+#Q6.
+fn <- function()
+{
+  full <- 100
+  half <- 0
+  day <- 1
+  tab <- "full"
+  while (tab!="half"){
+    if (tab == "full"){
+      full <- full - 1
+      half <- half + 1}
+    day <- day + 1
+    tab <- sample ( c("full", "half"), size = 1, prob = c(full,half))
+  }
+  day
+}
+
+n <- integer( length = 1000)
+for (i in 1:1000)
+{
+  n[i] <- fn()
+}
+mean(n)
+
+#Q7.
+#1
+MontyHall <- function()
+{
+  choice <- sample( c("goat", "car"), size = 1, prob = c(2,1))
+  if (choice == "goat")
+  {
+    return (1)
+  }
+  if (choice == "car") 
+  {
+    return (0)
+  }
+}
+MontyHall()
+
+#2
+n <- integer (length = 1000)
+for ( i in 1: 1000)
+  {
+    n[i]<- MontyHall()
+  }
+sum(n)/1000
+
+#Q8.
+library( imager)
+prop.color <- function(img, col){
+  count <- 0
+  img.mat <- as.array(img[,,1,])
+  for (i in 1:dim(img.mat)[1])
+    {
+    for (j in 1:dim(img.mat)[2])
+      {
+      dist <- norm(img.mat[i,j,]-col, type='2')
+      if (dist<0.5){ count <- count + 1
+      }
+    }
+  }
+  prop <- count/(dim(img.mat)[1]*dim(img.mat)[2])
+  return (prop)
+}
+img <- load.image("dog.jpeg")
+col <- c(1,1,0)
+prop.color(img,col)
+
+#Q9.
+img <- load.image("dog.jpeg")
+img.mat <- as.array(img[,,1,])
+mirror.mat <- array( dim = c(dim(img.mat)[1],dim(img.mat)[2],3))
+x <- seq(dim(img.mat)[1],1,-1)
+for (i in 1:dim(img.mat)[1])
+  {
+  for (j in 1:dim(img.mat)[2])
+    {
+      mirror.mat[x[i],j,] <- img.mat[i,j,]
+    }
+}
+mirror <- as.cimg(mirror.mat)
+plot(mirror)
+
+#Q10.
+A <- matrix( runif(1000*1000, min = 0, max = 1), nrow = 1000, ncol = 1000)
+norm_ <- numeric (length = 1000)
+for (i in 1:1000)
+  {
+     norm_[i] <- norm(A[,i], type = '2')
+  }
+sapply(A[,],norm)
